@@ -60,8 +60,9 @@ public class Player : MonoBehaviour
 
     private void Die()
     {
-        Debug.Log("Player died");
         Destroy(gameObject);
+
+        GameStartManager.Instance.OnPlayerLost();
     }
     
     void Flash()

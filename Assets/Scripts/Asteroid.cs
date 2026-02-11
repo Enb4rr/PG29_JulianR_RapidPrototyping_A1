@@ -24,6 +24,11 @@ public class Asteroid : MonoBehaviour
     {
         rb.linearVelocity = direction.normalized * speed;
     }
+    
+    public void Launch(Vector2 direction, float speedMultiplier)
+    {
+        rb.linearVelocity = direction.normalized * speed * speedMultiplier;
+    }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {

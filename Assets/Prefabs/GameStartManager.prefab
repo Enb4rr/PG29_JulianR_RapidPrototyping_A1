@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &5962517550966471578
+--- !u!1 &7957593908540043308
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,46 +8,41 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 2882262905064979772}
-  - component: {fileID: 8596069252113323432}
+  - component: {fileID: 7274046755435196062}
+  - component: {fileID: 2296517215947197434}
   m_Layer: 0
-  m_Name: AsteroidSpawner
+  m_Name: GameStartManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &2882262905064979772
+--- !u!4 &7274046755435196062
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5962517550966471578}
+  m_GameObject: {fileID: 7957593908540043308}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 6, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &8596069252113323432
+--- !u!114 &2296517215947197434
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5962517550966471578}
+  m_GameObject: {fileID: 7957593908540043308}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3b95a613038d45c448eaeb879c34d4fb, type: 3}
+  m_Script: {fileID: 11500000, guid: c7dc22e8b2c66f74180857969eea55aa, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::AsteroidSpawner
-  asteroidPrefab: {fileID: 8865587465865615753, guid: c51c17e83572ee744b2d5597d63ab695, type: 3}
-  spawnInterval: 1
-  spawnWidth: 12
-  minScale: 0.8
-  maxScale: 1.2
-  minSpeedMultiplier: 0.8
-  maxSpeedMultiplier: 1.2
+  m_EditorClassIdentifier: Assembly-CSharp::GameStartManager
+  gameSceneName: PlayScene
+  reloadDelay: 5
