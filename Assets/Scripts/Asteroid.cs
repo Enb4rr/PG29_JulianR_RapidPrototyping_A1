@@ -43,8 +43,6 @@ public class Asteroid : MonoBehaviour
     
     public void DestroyAsteroid()
     {
-        ScoreManager.Instance?.AddScore(scoreValue);
-        
         if (destroyParticles != null)
             Instantiate(destroyParticles, transform.position, Quaternion.identity);
         

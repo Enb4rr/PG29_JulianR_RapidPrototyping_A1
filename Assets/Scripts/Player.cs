@@ -4,8 +4,14 @@ using UnityEngine;
 [RequireComponent(typeof(Collider2D))]
 public class Player : MonoBehaviour
 {
+    [Header("Generals")]
     [SerializeField] private int maxHealth = 3;
     [SerializeField] private PlayerHealthUI healthUI;
+    
+    [Header("Shield")]
+    [SerializeField] private int maxShield = 3;
+    [SerializeField] private GameObject shieldVisual;
+    private int currentShield;
     
     [Header("Feedback")]
     [SerializeField] private SpriteRenderer spriteRenderer;
@@ -27,6 +33,8 @@ public class Player : MonoBehaviour
     private void Awake()
     {
         currentHealth = maxHealth;
+        currentShield = maxShield;
+        UpdateShieldVisual();
         
         if (spriteRenderer == null)
             spriteRenderer = GetComponent<SpriteRenderer>();
@@ -38,18 +46,43 @@ public class Player : MonoBehaviour
 
     public void TakeDamage(int amount)
     {
+        if (currentShield > 0)
+        {
+            currentShield -= amount;
+
+            if (currentShield < 0)
+            {
+                amount = -currentShield;
+                currentShield = 0;
+            }
+            else
+            {
+                UpdateShieldVisual();
+                Flash();
+                return;
+            }
+
+            UpdateShieldVisual();
+        }
+
         currentHealth -= amount;
         UpdateHealthUI();
         Flash();
-        
+
         if (hitParticles != null)
             Instantiate(hitParticles, transform.position, Quaternion.identity);
-        
+
         if (cameraShake != null)
-            cameraShake.Shake(0.15f, 0.2f); // duration, magnitude
+            cameraShake.Shake(0.15f, 0.2f);
 
         if (currentHealth <= 0)
             Die();
+    }
+    
+    void UpdateShieldVisual()
+    {
+        if (shieldVisual != null)
+            shieldVisual.SetActive(currentShield > 0);
     }
 
     void UpdateHealthUI()

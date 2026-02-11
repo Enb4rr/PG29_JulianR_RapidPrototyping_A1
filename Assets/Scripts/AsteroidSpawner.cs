@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class AsteroidSpawner : MonoBehaviour
@@ -12,15 +13,51 @@ public class AsteroidSpawner : MonoBehaviour
 
     [SerializeField] private float minSpeedMultiplier = 0.7f;
     [SerializeField] private float maxSpeedMultiplier = 1.4f;
+    
+    [Header("Difficulty")]
+    [SerializeField] private float difficultyIncreaseRate = 0.05f;
+    [SerializeField] private float minSpawnInterval = 0.5f;
 
+    [SerializeField] private float maxSpeedMultiplierLimit = 2.5f;
+
+    private float difficultyTimer = 0f;
+    private float currentSpawnInterval;
+    
     private Transform player;
+    private Coroutine spawnRoutine;
 
     private void Start()
     {
         player = FindObjectOfType<Player>().transform;
 
+        currentSpawnInterval = spawnInterval;
+
         GameStartManager.Instance.OnGameStarted += () =>
-            InvokeRepeating(nameof(SpawnAsteroid), 1f, spawnInterval);
+        {
+            ResetDifficulty();
+            spawnRoutine = StartCoroutine(SpawnLoop());
+        };
+    }
+    
+    private void Update()
+    {
+        difficultyTimer += Time.deltaTime;
+
+        currentSpawnInterval = Mathf.Max(
+            minSpawnInterval,
+            spawnInterval - difficultyTimer * difficultyIncreaseRate
+        );
+    }
+    
+    private IEnumerator SpawnLoop()
+    {
+        yield return new WaitForSeconds(1f);
+
+        while (true)
+        {
+            SpawnAsteroid();
+            yield return new WaitForSeconds(currentSpawnInterval);
+        }
     }
 
     private void SpawnAsteroid()
@@ -43,7 +80,17 @@ public class AsteroidSpawner : MonoBehaviour
         Vector2 dir = (player.position - spawnPos).normalized;
 
         // Random speed
-        float speedMultiplier = Random.Range(minSpeedMultiplier, maxSpeedMultiplier);
+        float difficultySpeedBoost = 1f + difficultyTimer * 0.05f;
+        difficultySpeedBoost = Mathf.Min(difficultySpeedBoost, maxSpeedMultiplierLimit);
+
+        float speedMultiplier = Random.Range(minSpeedMultiplier, maxSpeedMultiplier) * difficultySpeedBoost;
+        
         asteroid.Launch(dir, speedMultiplier);
+    }
+    
+    private void ResetDifficulty()
+    {
+        difficultyTimer = 0f;
+        currentSpawnInterval = spawnInterval;
     }
 }
