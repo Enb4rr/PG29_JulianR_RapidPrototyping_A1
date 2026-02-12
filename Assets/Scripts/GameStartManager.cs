@@ -12,7 +12,7 @@ public class GameStartManager : MonoBehaviour
     [SerializeField] private float reloadDelay = 5f;
 
     public event Action OnGameStarted;
-    public event Action OnGameEnded;
+    public event Action OnGameWon;
 
     private bool gameStarted = false;
     private bool isReloading = false;
@@ -42,8 +42,15 @@ public class GameStartManager : MonoBehaviour
     public void OnPlayerLost()
     {
         if (isReloading) return;
+        
+        StartCoroutine(ReloadStartSceneAfterDelay());
+    }
+    
+    public void OnPlayerWon()
+    {
+        if (isReloading) return;
 
-        OnGameEnded?.Invoke();
+        OnGameWon?.Invoke();
         StartCoroutine(ReloadStartSceneAfterDelay());
     }
 
@@ -57,5 +64,10 @@ public class GameStartManager : MonoBehaviour
         isReloading = false;
 
         SceneManager.LoadScene(gameSceneName);
+    }
+
+    public void LoadScene(string sceneName)
+    {
+        SceneManager.LoadScene(sceneName);
     }
 }

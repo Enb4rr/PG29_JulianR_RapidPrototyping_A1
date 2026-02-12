@@ -8,6 +8,7 @@ public class Bullet : MonoBehaviour
     [SerializeField] private float lifetime = 4f;
 
     private Rigidbody2D rb;
+    private bool hitSomething;
 
     private void Awake()
     {
@@ -17,7 +18,7 @@ public class Bullet : MonoBehaviour
     private void Start()
     {
         rb.linearVelocity = Vector2.up * speed;
-        Destroy(gameObject, lifetime);
+        Invoke(nameof(Expire), lifetime);
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -26,8 +27,17 @@ public class Bullet : MonoBehaviour
 
         if (asteroid != null)
         {
+            hitSomething = true;
             asteroid.DestroyAsteroid();
             Destroy(gameObject);
         }
+    }
+
+    private void Expire()
+    {
+        if (!hitSomething)
+            ScoreManager.Instance?.ResetMultiplier();
+
+        Destroy(gameObject);
     }
 }
